@@ -3,6 +3,12 @@
 
 
 class Player:
-    def __init__(self, name, current_room):
+    def __init__(self, name, current_room, inventory=None):
         self.name = name
         self.current_room = current_room
+        self.inventory = inventory
+        if self.inventory is None:
+            self.inventory = []
+
+    def add_item(self, item):
+        self.inventory.append(item)

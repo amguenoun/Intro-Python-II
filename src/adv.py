@@ -74,21 +74,10 @@ def direction_error(direction):
     print(f"\nThere's nothing {direction}, please pick another direction")
 
 
-while True:
-    print(
-        f"\n{player.name} is currently {player.current_room.name}. {player.current_room.description}")
-
-    if len(player.current_room.item_list) == 0:
-        print(f'There are no items in this room.')
-    else:
-        for item in player.current_room.item_list:
-            print(f'{player.name} sees a {item.name}. {item.description}')
-
-    action = input(f'What does {player.name} do? --> ')
-
+def accept_input(action):
     if action == 'q':
         print('Goodbye!')
-        break
+        exit(0)
     elif action == 'n':
         if player.current_room.n_to == None:
             direction_error("north")
@@ -113,3 +102,18 @@ while True:
         print('\nn North, s South, e East, w West, q quit')
     else:
         print('\nCommand not recognized. Type help for command list.')
+
+
+while True:
+    print(
+        f"\n{player.name} is currently {player.current_room.name}. {player.current_room.description}")
+
+    if len(player.current_room.item_list) == 0:
+        print(f'There are no items in this room.')
+    else:
+        for item in player.current_room.item_list:
+            print(f'{player.name} sees a {item.name}. {item.description}')
+
+    action = input(f'What does {player.name} do? --> ')
+
+    accept_input(action)
