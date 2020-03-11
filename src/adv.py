@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -33,6 +34,18 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Add Items to Rooms
+
+room['outside'].add_item(Item('leaf', 'It is a dazzling emerald color.'))
+room['foyer'].add_item(
+    Item('candle', 'It is currently out. The wax is warm to the touch.'))
+room['overlook'].add_item(
+    Item('rock', 'It is a round brown rock. Nothing special.'))
+room['treasure'].add_item(
+    Item('gold coin', 'The golden color inspires visions of wealth.'))
+room['treasure'].add_item(
+    Item('ruby', 'It is a starling red gem. It might be worth something.'))
+
 #
 # Main
 #
@@ -54,17 +67,49 @@ player = Player("Player 1", room['outside'])
 
 print('Welcome to Adventure Game!')
 print('type n to move north, s for south, e and w for east and west respectively')
-print('q is to quit the game\n')
+print('q is to quit the game')
+
+
+def direction_error(direction):
+    print(f"\nThere's nothing {direction}, please pick another direction")
+
 
 while True:
     print(
-        f"{player.name} is currently {player.current_room.name}. {player.current_room.description}")
-    action = input(f'What does {player.name} do? (q to quit) --> ')
+        f"\n{player.name} is currently {player.current_room.name}. {player.current_room.description}")
+
+    if len(player.current_room.item_list) == 0:
+        print(f'There are no items in this room.')
+    else:
+        for item in player.current_room.item_list:
+            print(f'{player.name} sees a {item.name}. {item.description}')
+
+    action = input(f'What does {player.name} do? --> ')
+
     if action == 'q':
         print('Goodbye!')
         break
     elif action == 'n':
         if player.current_room.n_to == None:
-            print("There's nothing there, please pick another direction")
+            direction_error("north")
         else:
             player.current_room = player.current_room.n_to
+    elif action == 's':
+        if player.current_room.s_to == None:
+            direction_error("south")
+        else:
+            player.current_room = player.current_room.s_to
+    elif action == 'e':
+        if player.current_room.e_to == None:
+            direction_error("east")
+        else:
+            player.current_room = player.current_room.e_to
+    elif action == 'w':
+        if player.current_room.w_to == None:
+            direction_error("west")
+        else:
+            player.current_room = player.current_room.w_to
+    elif action == 'help':
+        print('\nn North, s South, e East, w West, q quit')
+    else:
+        print('\nCommand not recognized. Type help for command list.')
