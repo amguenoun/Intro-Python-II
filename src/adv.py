@@ -51,8 +51,9 @@ room['treasure'].add_item(
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
-player = Player("Player 1", room['outside'])
+player = Player(input('Enter Player Name: '), room['outside'])
+print(
+    f"\n{player.name} current Location: {player.current_room.name}.\n{player.current_room.description}\n")
 
 # Write a loop that:
 #
@@ -65,75 +66,33 @@ player = Player("Player 1", room['outside'])
 #
 # If the user enters "q", quit the game.
 
-print('Welcome to Adventure Game!')
-print('type n to move north, s for south, e and w for east and west respectively')
-print('q is to quit the game')
-
-
-def direction_error(direction):
-    print(f"\nThere's nothing {direction}, please pick another direction")
+valid_directions = ("n", "s", "e", "w")
 
 
 def accept_input(action):
-
+    print('----------')
     if len(action) == 1:
         if action[0] == 'q':
             print('Goodbye!')
             exit(0)
-        elif action[0] == 'n':
-            if player.current_room.n_to == None:
-                direction_error("north")
-            else:
-                player.current_room = player.current_room.n_to
-        elif action[0] == 's':
-            if player.current_room.s_to == None:
-                direction_error("south")
-            else:
-                player.current_room = player.current_room.s_to
-        elif action[0] == 'e':
-            if player.current_room.e_to == None:
-                direction_error("east")
-            else:
-                player.current_room = player.current_room.e_to
-        elif action[0] == 'w':
-            if player.current_room.w_to == None:
-                direction_error("west")
-            else:
-                player.current_room = player.current_room.w_to
+        elif action[0] in valid_directions:
+            player.travel(action[0])
         elif action[0] == 'help':
             print(
-                '\nn North, s South, e East, w West, q quit, get/take [item], inv inventory')
-        elif action[0] == 'inv':
-            if len(player.inventory) == 0:
-                print('\nInventory is empty')
-            else:
-                print(f'\n{player.name} opens their inventory:')
-                for item in player.inventory:
-                    print(f"{item.name.upper()}: {item.description}")
+                'Directions: n, s, e, w. Quit: q, Get/Take [item], i/inventory inventory')
+        elif action[0] == 'i' or action[0] == 'inventory':
+            player.print_inventory()
         else:
             print('\nCommand not recognized. Type help for command list.')
     elif len(action) == 2:
-        if action[0] == 'get' or action[0] == 'take':
-            for item in player.current_room.item_list:
-                if action[1].lower() == item.name:
-                    player.add_item(item)
-                    player.current_room.remove_item(item)
-                    print(f'\n{player.name} picks up {item.name}')
-                else:
-                    print(f'No {item.name} to pick up.')
+        if action[0].lower() == 'get' or action[0].lower() == 'take':
+            player.take_item(action[1])
+            player.print_player_location()
         else:
             print('\nCommand not recognized. Type help for command list.')
 
 
 while True:
-    print(
-        f"\n{player.name} is currently {player.current_room.name}. {player.current_room.description}")
-
-    if len(player.current_room.item_list) == 0:
-        print(f'There are no items in this room.')
-    else:
-        for item in player.current_room.item_list:
-            print(f'{player.name} sees a {item.name}. {item.description}')
-
+    player.current_room.print_room_items()
     action = input(f'What does {player.name} do? --> ').split(" ")
     accept_input(action)
