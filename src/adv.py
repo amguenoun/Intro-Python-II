@@ -72,7 +72,7 @@ def accept_input(action):
     print('----------')
     if len(action) == 1:
         if action[0] == 'q':
-            print('Goodbye!')
+            print(f'Goodbye {player.name}. Your Score: {player.score}')
             exit(0)
         elif action[0] in valid_directions:
             player.travel(action[0])

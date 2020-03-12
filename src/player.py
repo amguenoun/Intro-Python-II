@@ -8,6 +8,7 @@ class Player:
         self.name = name
         self.current_room = current_room
         self.inventory = inventory
+        self.score = 0
         self.sight = True
         if self.inventory is None:
             self.inventory = []
@@ -20,6 +21,7 @@ class Player:
                     self.inventory.append(item)
                     self.current_room.remove_item(item)
                     item.on_take(self.name)
+                    self.score += 10
                     x = 0
             if x:
                 print(f'No {target} to pick up.')
@@ -34,6 +36,7 @@ class Player:
                     self.inventory.remove(item)
                     self.current_room.add_item(item)
                     item.on_drop(self.name)
+                    self.score -= 10
                     x = 0
             if x:
                 print(f'No {target} to drop.')
@@ -52,6 +55,7 @@ class Player:
     def travel(self, direction):
         if self.current_room.get_room(direction):
             self.current_room = self.current_room.get_room(direction)
+            self.score += 1
             self.print_player_location()
         else:
             print("There is nothing in that direction")
