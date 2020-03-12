@@ -39,3 +39,17 @@ class Room:
         else:
             for item in self.item_list:
                 print(f'You see a {item.name}. {item.description}')
+
+    def connect_room(self, room, direction):
+        if direction == 'n':
+            self.n_to = room
+            room.s_to = self
+        if direction == 's':
+            self.s_to = room
+            room.n_to = self
+        if direction == 'e':
+            self.e_to = room
+            room.w_to = self
+        if direction == 'w':
+            self.w_to = room
+            room.e_to = self
