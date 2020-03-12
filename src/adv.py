@@ -67,6 +67,7 @@ print(
 # If the user enters "q", quit the game.
 
 valid_directions = ("n", "s", "e", "w")
+valid_verbs = ('get', 'take', 'drop')
 
 
 def accept_input(action):
@@ -79,20 +80,24 @@ def accept_input(action):
             player.travel(action[0])
         elif action[0] == 'help':
             print(
-                'Directions: n, s, e, w. Quit: q, Get/Take [item], i/inventory inventory')
+                'Directions: n, s, e, w. Quit: q, Items: get/take/drop [item], Inventory:  i/inventory')
         elif action[0] == 'i' or action[0] == 'inventory':
             player.print_inventory()
         else:
             print('\nCommand not recognized. Type help for command list.')
     elif len(action) == 2:
-        if action[0].lower() == 'get' or action[0].lower() == 'take':
-            player.take_item(action[1])
-            player.print_player_location()
+        if action[0] in valid_verbs:
+            if action[0] in ('get', 'take'):
+                player.take_item(action[1])
+                player.print_player_location()
+            elif action[0] == 'drop':
+                player.drop_item(action[1])
+                player.print_player_location()
         else:
             print('\nCommand not recognized. Type help for command list.')
 
 
 while True:
     player.current_room.print_room_items()
-    action = input(f'What does {player.name} do? --> ').split(" ")
+    action = input(f'What does {player.name} do? --> ').lower().split(" ")
     accept_input(action)
