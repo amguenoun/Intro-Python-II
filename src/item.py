@@ -11,3 +11,8 @@ class Item:
 
     def on_drop(self, p_name):
         print(f'{p_name} drops {self.name}\n')
+
+
+class LightSource(Item):
+    def __init__(self, name, description):
+        super().__init__(name, description)

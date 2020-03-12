@@ -1,11 +1,11 @@
 from room import Room
 from player import Player
-from item import Item
+from item import Item, LightSource
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", True),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -33,6 +33,8 @@ room['narrow'].connect_room(room['treasure'], 'n')
 # Add Items to Rooms
 
 room['outside'].add_item(Item('leaf', 'It is a dazzling emerald color.'))
+room['outside'].add_item(
+    LightSource('lamp', 'The light from the lamp brightens your spirit in this dark world.'))
 room['foyer'].add_item(
     Item('candle', 'It is currently out. The wax is warm to the touch.'))
 room['overlook'].add_item(
@@ -50,7 +52,7 @@ room['treasure'].add_item(
 player = Player(input('Enter Player Name: '), room['outside'])
 print(
     f"\n{player.name} current Location: {player.current_room.name}.\n{player.current_room.description}\n")
-
+player.current_room.print_room_items()
 # Write a loop that:
 #
 # * Prints the current room name
@@ -94,6 +96,5 @@ def accept_input(action):
 
 
 while True:
-    player.current_room.print_room_items()
     action = input(f'What does {player.name} do? --> ').lower().split(" ")
     accept_input(action)

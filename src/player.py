@@ -1,5 +1,6 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
+from item import LightSource
 
 
 class Player:
@@ -7,26 +8,37 @@ class Player:
         self.name = name
         self.current_room = current_room
         self.inventory = inventory
+        self.sight = True
         if self.inventory is None:
             self.inventory = []
 
     def take_item(self, target):
-        for item in self.current_room.item_list:
-            if target == item.name:
-                self.inventory.append(item)
-                self.current_room.remove_item(item)
-                item.on_take(self.name)
-            else:
+        if self.sight:
+            x = 1
+            for item in self.current_room.item_list:
+                if target == item.name:
+                    self.inventory.append(item)
+                    self.current_room.remove_item(item)
+                    item.on_take(self.name)
+                    x = 0
+            if x:
                 print(f'No {target} to pick up.')
+        else:
+            print("Good luck trying to pick things up in the dark!")
 
     def drop_item(self, target):
-        for item in self.inventory:
-            if target == item.name:
-                self.inventory.remove(item)
-                self.current_room.add_item(item)
-                item.on_drop(self.name)
-            else:
-                print(f'No {target} to pick up.')
+        if self.inventory:
+            x = 1
+            for item in self.inventory:
+                if target == item.name:
+                    self.inventory.remove(item)
+                    self.current_room.add_item(item)
+                    item.on_drop(self.name)
+                    x = 0
+            if x:
+                print(f'No {target} to drop.')
+        else:
+            print('Inventory is empty. Nothing to drop')
 
     def print_inventory(self):
         if len(self.inventory) == 0:
@@ -45,4 +57,10 @@ class Player:
             print("There is nothing in that direction")
 
     def print_player_location(self):
-        print(f"{self.name} {self.current_room}")
+        if self.current_room.is_light or [True for item in self.inventory if isinstance(item, LightSource)] or [True for item in self.current_room.item_list if isinstance(item, LightSource)]:
+            self.sight = True
+            print(f"{self.name} {self.current_room}")
+            self.current_room.print_room_items()
+        else:
+            self.sight = False
+            print(f"{self.name} cannot see in the dark. It is pitch black!")
