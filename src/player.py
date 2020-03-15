@@ -4,12 +4,13 @@ from item import LightSource
 
 
 class Player:
-    def __init__(self, name, current_room, inventory=None):
+    def __init__(self, name, current_room, inventory=None, hp=20):
         self.name = name
         self.current_room = current_room
         self.inventory = inventory
         self.score = 0
         self.sight = True
+        self.hp = 20
         if self.inventory is None:
             self.inventory = []
 

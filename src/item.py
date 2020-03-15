@@ -16,3 +16,9 @@ class Item:
 class LightSource(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
+
+
+class Weapon(Item):
+    def __init__(self, name, description, attack):
+        super().__init__(name, description)
+        self.attack = attack

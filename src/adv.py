@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
-from item import Item, LightSource
+from item import Item, LightSource, Weapon
+from monster import Monster
 # Declare all the rooms
 
 room = {
@@ -43,6 +44,14 @@ room['treasure'].add_item(
     Item('gold', 'The golden color inspires visions of wealth.'))
 room['treasure'].add_item(
     Item('ruby', 'It is a starling red gem. It might be worth something.'))
+room['foyer'].add_item(
+    Weapon('sword', 'The edge hungers for blood.', 5))
+
+
+# Add Monsters
+
+goblin = Monster('Goblin', 'A short green deadly creature. Eyes filled with hunger, it stalks toward you',
+                 room['overlook'], 10, 2, 'Fury Claws')
 
 #
 # Main
