@@ -19,12 +19,21 @@ class Room:
         return f"current location: {self.name}.\n{self.description}\n"
 
     def add_item(self, item):
+        '''
+        Adds item to list of items currently in the room
+        '''
         self.item_list.append(item)
 
     def remove_item(self, item):
+        '''
+        Removes item from list of items currently in the room
+        '''
         self.item_list.remove(item)
 
     def get_room(self, direction):
+        '''
+        returns room object that lies in a specific direction
+        '''
         if direction == 'n':
             return self.n_to
         if direction == 's':
@@ -35,6 +44,9 @@ class Room:
             return self.w_to
 
     def print_room_items(self):
+        '''
+        Prints items currently in the room
+        '''
         if len(self.item_list) == 0:
             print(f'There are no items in this room.')
         else:
@@ -42,6 +54,9 @@ class Room:
                 print(f'You see a {item.name}. {item.description}')
 
     def connect_room(self, room, direction):
+        '''
+        establishes a directional connection between two rooms
+        '''
         if direction == 'n':
             self.n_to = room
             room.s_to = self
